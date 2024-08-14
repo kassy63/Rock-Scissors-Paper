@@ -14,9 +14,31 @@ const Box = (props) => {
         border: `5px solid ${getBorderColor()}`,
       }}
     >
-      <h1>{props.title}</h1>
-      <img className="item-img" src={props.item && props.item.img} />
-      <h2>{props.result}</h2>
+      {props.item ? (
+        <>
+          <h1
+            style={{
+              color: `${getBorderColor()}`,
+            }}
+          >
+            {props.title}
+          </h1>
+          <img
+            className="item-img"
+            src={props.item && props.item.img}
+            alt={props.item.name}
+          />
+        </>
+      ) : (
+        <h1>{props.title}</h1>
+      )}
+      <h2
+        style={{
+          color: `${getBorderColor()}`,
+        }}
+      >
+        {props.result}
+      </h2>
     </div>
   );
 };
