@@ -12,15 +12,15 @@ import Box from "./component/Box";
 const choice = {
   rock: {
     name: "Rock",
-    img: "https://cdn.sketchpan.com/member/g/gml9796/draw/1232328441169/0.png",
+    img: "https://cdn-icons-png.flaticon.com/128/9496/9496176.png",
   },
   scissors: {
     name: "Scissors",
-    img: "https://cdn-icons-png.flaticon.com/512/4975/4975327.png",
+    img: "https://cdn-icons-png.flaticon.com/128/9534/9534501.png",
   },
   paper: {
     name: "Paper",
-    img: "https://cdn-icons-png.flaticon.com/512/5824/5824373.png",
+    img: "https://cdn-icons-png.flaticon.com/128/5152/5152399.png",
   },
 };
 
@@ -28,12 +28,23 @@ function App() {
   const [userSelect, setUserSelect] = useState(null);
   const [computerSelect, setComputerSelect] = useState(null);
   const [result, setResult] = useState("");
+  const [selectedButton, setSelectedButton] = useState("");
 
+  // const play = (userChoice) => {
+  //   setUserSelect(choice[userChoice]);
+  //   const computerChoice = randomChoice();
+  //   setComputerSelect(computerChoice);
+  //   setResult(judgement(choice[userChoice], computerChoice));
+  // };
   const play = (userChoice) => {
-    setUserSelect(choice[userChoice]);
-    let computerChoice = randomChoice();
-    setComputerSelect(computerChoice);
-    setResult(judgement(choice[userChoice], computerChoice));
+    const user = choice[userChoice];
+    const computer = randomChoice();
+    const gameResult = judgement(user, computer);
+
+    setUserSelect(user);
+    setComputerSelect(computer);
+    setResult(gameResult);
+    setSelectedButton(userChoice);
   };
 
   const judgement = (user, computer) => {
@@ -57,34 +68,59 @@ function App() {
       return computer.name === "Rock" ? "WIN" : "LOSE";
   };
 
+  // const randomChoice = () => {
+  //   const itemArray = Object.keys(choice);
+  //   console.log("~ randomChoice ~ itemArray:", itemArray);
+  //   const randomItem = Math.floor(Math.random() * itemArray.length);
+  //   console.log("~ randomChoice ~ randomItem:", randomItem);
+  //   const final = itemArray[randomItem];
+  //   console.log("~ randomChoice ~ final:", final);
+  //   return choice[final];
+  // };
   const randomChoice = () => {
-    let itemArray = Object.keys(choice); // 객체에 키 값만 뽑아서 어레이로 만들어주는 함수
-    console.log("~ randomChoice ~ itemArray:", itemArray);
-    let randomItem = Math.floor(Math.random() * itemArray.length);
-    console.log("~ randomChoice ~ randomItem:", randomItem);
-    let final = itemArray[randomItem];
-    console.log("~ randomChoice ~ final:", final);
-    return choice[final];
+    const itemArray = Object.keys(choice); // Object.keys() -> 객체에 키 값만 뽑아서 어레이로 만들어주는 함수
+    const randomItem = Math.floor(Math.random() * itemArray.length);
+    return choice[itemArray[randomItem]];
   };
 
   return (
-    <div>
+    <div className="wrapper">
+      <h1>가위바위보 게임</h1>
       <div className="main">
         <Box
           title="You"
           item={userSelect}
-          result={result === "WIN" ? "WIN" : result === "LOSE" ? "LOSE" : "TIE"}
+          result={
+            result === "WIN" ? "WIN" : result === "LOSE" ? "LOSE" : result
+          }
         />
         <Box
           title="Computer"
           item={computerSelect}
-          result={result === "LOSE" ? "WIN" : result === "WIN" ? "LOSE" : "TIE"}
+          result={
+            result === "LOSE" ? "WIN" : result === "WIN" ? "LOSE" : result
+          }
         />
       </div>
-      <div className="main">
-        <button onClick={() => play("scissors")}>가위</button>
-        <button onClick={() => play("rock")}>바위</button>
-        <button onClick={() => play("paper")}>보</button>
+      <div className="buttons">
+        <button
+          onClick={() => play("scissors")}
+          className={selectedButton === "scissors" ? "selected" : ""}
+        >
+          <img src={choice.scissors.img} alt="Scissors" />
+        </button>
+        <button
+          onClick={() => play("rock")}
+          className={selectedButton === "rock" ? "selected" : ""}
+        >
+          <img src={choice.rock.img} alt="Rock" />
+        </button>
+        <button
+          onClick={() => play("paper")}
+          className={selectedButton === "paper" ? "selected" : ""}
+        >
+          <img src={choice.paper.img} alt="Paper" />
+        </button>
       </div>
     </div>
   );
